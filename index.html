@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDF Student Info Editor</title>
+    <meta name="description" content="Add Student Name, Moodle ID, and Roll No to multiple PDFs at once.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=Space+Grotesk:wght@700&display=swap" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="page-wrapper">
+        <header class="header">
+            <h1>PDF Student Info Editor</h1>
+            <p>Upload up to 10 PDFs and automatically update student information</p>
+        </header>
+
+        <main class="main-content">
+            <!-- Left Column: Details -->
+            <section class="card details-card">
+                <h2>Student Details</h2>
+                
+                <div class="input-group">
+                    <label for="studentName">STUDENT NAME</label>
+                    <input type="text" id="studentName" placeholder="Enter full name" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="moodleId">MOODLE ID</label>
+                    <input type="text" id="moodleId" placeholder="e.g., 24106149" required>
+                </div>
+                
+                <div class="input-group">
+                    <label for="rollNo">ROLL NUMBER</label>
+                    <input type="text" id="rollNo" placeholder="e.g., 16" required>
+                </div>
+
+                <div class="note-box">
+                    <strong>Note:</strong> Fill in all details before uploading PDFs. The same information will be used for all uploaded files.
+                </div>
+                
+                <button id="processBtn" class="brutal-btn" disabled>Process PDFs</button>
+            </section>
+
+            <!-- Right Column: Upload -->
+            <div class="right-column">
+                <section class="upload-area" id="dropZone">
+                    <div class="upload-content">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="upload-icon"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="17 8 12 3 7 8"></polyline><line x1="12" y1="3" x2="12" y2="15"></line></svg>
+                        <h3>Upload PDFs</h3>
+                        <p>Drag & drop or click to select PDF files</p>
+                        <div class="file-pill" id="fileCountPill">0 / 10 files</div>
+                        <input type="file" id="fileInput" accept="application/pdf" multiple hidden>
+                    </div>
+                </section>
+                
+                <div class="file-list" id="fileList"></div>
+            </div>
+        </main>
+
+        <section class="results-section hidden" id="resultsSection">
+            <h2>Processed Files</h2>
+            <div id="processedList" class="processed-list"></div>
+        </section>
+    </div>
+
+    <!-- Preview Modal -->
+    <div id="previewModal" class="modal hidden">
+        <div class="modal-content card">
+            <div class="modal-header">
+                <h2>PDF Preview</h2>
+                <button id="closeModalBtn" class="btn-close">&times;</button>
+            </div>
+            <div class="modal-body">
+                <iframe id="previewIframe" src="" frameborder="0"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
+    <script>
+        window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.worker.min.js';
+    </script>
+    <script src="https://unpkg.com/pdf-lib/dist/pdf-lib.min.js"></script>
+    <script src="https://unpkg.com/file-saver/dist/FileSaver.min.js"></script>
+    <script src="script.js"></script>
+</body>
+</html>
