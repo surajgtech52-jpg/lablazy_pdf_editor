@@ -352,3 +352,66 @@ style.innerHTML = `
     }
 `;
 document.head.appendChild(style);
+
+const bugReportBtn = document.getElementById('bugReportBtn');
+const bugReportModal = document.getElementById('bugReportModal');
+const closeBugReportBtn = document.getElementById('closeBugReportBtn');
+const bugReportForm = document.getElementById('bugReportForm');
+const bugReportStatus = document.getElementById('bugReportStatus');
+const submitBugReportBtn = document.getElementById('submitBugReportBtn');
+
+function closeBugReport() {
+    bugReportModal.classList.add('hidden');
+    bugReportStatus.textContent = '';
+}
+
+bugReportBtn.addEventListener('click', () => {
+    bugReportModal.classList.remove('hidden');
+    document.getElementById('reporterEmail').focus();
+});
+
+closeBugReportBtn.addEventListener('click', closeBugReport);
+
+bugReportModal.addEventListener('click', (event) => {
+    if (event.target === bugReportModal) closeBugReport();
+});
+
+bugReportForm.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    submitBugReportBtn.disabled = true;
+    submitBugReportBtn.textContent = 'Sending...';
+    bugReportStatus.textContent = '';
+
+    try {
+        const response = await fetch('/api/feedback', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(Object.fromEntries(new FormData(bugReportForm)))
+        });
+
+        const responseText = await response.text();
+        let result = {};
+
+        if (responseText.trim()) {
+            try {
+                result = JSON.parse(responseText);
+            } catch (parseError) {
+                console.error('Feedback endpoint returned invalid JSON:', parseError);
+            }
+        }
+
+        if (!response.ok) {
+            throw new Error(result.error || 'Unable to send report.');
+        }
+
+        bugReportForm.reset();
+        bugReportStatus.textContent = 'Thanks. Your report was submitted.';
+        bugReportStatus.style.color = '#047857';
+    } catch (error) {
+        bugReportStatus.textContent = error.message;
+        bugReportStatus.style.color = '#b91c1c';
+    } finally {
+        submitBugReportBtn.disabled = false;
+        submitBugReportBtn.textContent = 'Send report';
+    }
+});
