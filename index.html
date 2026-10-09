@@ -81,6 +81,41 @@
         </div>
     </div>
 
+    <button id="bugReportBtn" class="bug-report-btn" type="button" aria-haspopup="dialog">
+        Report an issue
+    </button>
+
+    <div id="bugReportModal" class="modal hidden" role="dialog" aria-modal="true" aria-labelledby="bugReportTitle">
+        <div class="modal-content bug-report-content card">
+            <div class="modal-header">
+                <h2 id="bugReportTitle">Report an issue</h2>
+                <button id="closeBugReportBtn" class="btn-close" type="button" aria-label="Close">&times;</button>
+            </div>
+            <form id="bugReportForm">
+                <div class="input-group">
+                    <label for="reporterEmail">EMAIL</label>
+                    <input type="email" id="reporterEmail" name="email" placeholder="you@example.com" required>
+                </div>
+                <div class="input-group">
+                    <label for="issuePriority">PRIORITY</label>
+                    <select id="issuePriority" name="priority" required>
+                        <option value="Low">Low</option>
+                        <option value="Normal" selected>Normal</option>
+                        <option value="High">High</option>
+                        <option value="Urgent">Urgent</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="issueDescription">DESCRIPTION</label>
+                    <textarea id="issueDescription" name="description" rows="5" maxlength="2000"
+                        placeholder="Tell us what went wrong..." required></textarea>
+                </div>
+                <p id="bugReportStatus" class="bug-report-status" role="status"></p>
+                <button id="submitBugReportBtn" class="brutal-btn" type="submit">Send report</button>
+            </form>
+        </div>
+    </div>
+
     <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.14.305/pdf.min.js"></script>
     <script>
